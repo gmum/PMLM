@@ -231,7 +231,9 @@ class PMLM(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
             return self.priors[l]
 
     def __str__(self):
-        return '{}({})'.format(self.__class__.__name__, ', '.join(['{}={}'.format(field, getattr(self, field)) for field in self._str_fields]))
+        return '{}({})'.format(self.__class__.__name__,
+                               ', '.join(['{}={}'.format(field, getattr(self, field))
+                                         for field in self._str_fields]))
 
     def __repr__(self):
         return str(self)

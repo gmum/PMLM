@@ -43,7 +43,8 @@ def cip(gmm1, gmm2):
     variances = np.maximum(EPSILON_CONSTANT, gmm1[:, 2].reshape(-1, 1) + gmm2[:, 2].reshape(1, -1))
     coefs = gmm1[:, 0].reshape(-1, 1) * gmm2[:, 0].reshape(1, -1)
     
-    integrals = np.multiply(1. / np.sqrt(2 * np.pi * variances) , np.multiply(coefs, np.exp( -(distances ** 2) / (2 * variances) ) ) )
+    integrals = np.multiply(1. / np.sqrt(2 * np.pi * variances),
+                            np.multiply(coefs, np.exp( -(distances ** 2) / (2 * variances))))
 
     return np.sum(integrals) / (len(gmm1) * len(gmm2))
 
@@ -78,11 +79,10 @@ def D_KL(gmm1, gmm2):
     a, b = gmm1[0], gmm2[0]
     return 0.5 * (Dkl(a[1], a[2], b[1], b[2]) + Dkl(b[1], b[2], a[1], a[2]))
 
-
-MEANS = {
+_MEANS = {
     'arithmetic': np.mean,
     'geometric': utils.geometric_mean,
-    'harmonid': utils.harmonic_mean
+    'harmonic': utils.harmonic_mean
 }
 
 def densities_loss(gmm, divergence, method='geometric'):
@@ -90,8 +90,8 @@ def densities_loss(gmm, divergence, method='geometric'):
     Creates loss from a given divergence by returning the negation of its multi-distribution generalization.
     """
 
-    if method in MEANS:
-        method = MEANS[method]
+    if method in _MEANS:
+        method = _MEANS[method]
     else:
         raise Exception('{} is not supported'.format(method))
 
